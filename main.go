@@ -17,12 +17,12 @@ func homeLink(w http.ResponseWriter, r *http.Request) {
 func main() {
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/", homeLink)
-	router.HandleFunc("/version", oapi.GetVersion).Methods("GET")
-	router.HandleFunc("/api/projects", oapi.CreateProject).Methods("POST")
-	router.HandleFunc("/api/projects", oapi.GetAllProjects).Methods("GET")
-	router.HandleFunc("/api/projects/{ci}", oapi.GetOneProject).Methods("GET")
-	router.HandleFunc("/api/projects/{ci}", oapi.UpdateProject).Methods("PATCH")
-	router.HandleFunc("/api/projects/{ci}", oapi.DeleteProject).Methods("DELETE")
+	router.HandleFunc("/api/v1/version", oapi.GetVersion).Methods("GET")
+	router.HandleFunc("/api/v1/projects", oapi.CreateProject).Methods("POST")
+	router.HandleFunc("/api/v1/projects", oapi.GetAllProjects).Methods("GET")
+	router.HandleFunc("/api/v1/projects/{ci}", oapi.GetOneProject).Methods("GET")
+	router.HandleFunc("/api/v1/projects/{ci}", oapi.UpdateProject).Methods("PATCH")
+	router.HandleFunc("/api/v1/projects/{ci}", oapi.DeleteProject).Methods("DELETE")
 
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
