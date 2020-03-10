@@ -17,10 +17,13 @@ func CreateProject(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Fprintf(w, "Enter data with CI, Name and Description of a OpenShift")
 	}
-	projects := ogit.GetProjects()
+	//projects := ogit.GetProjects()
 	json.Unmarshal(reqBody, &newProject)
-	projects = append(projects, newProject)
+	ogit.Namespaces = append(ogit.Namespaces, newProject)
 	w.WriteHeader(http.StatusCreated)
+
+	ci := newProject.CI
+	ogit.CreateProject(ci)
 
 	json.NewEncoder(w).Encode(newProject)
 }
@@ -28,9 +31,9 @@ func CreateProject(w http.ResponseWriter, r *http.Request) {
 // GetOneProject - Get dedicated project in API
 func GetOneProject(w http.ResponseWriter, r *http.Request) {
 	projectCI := mux.Vars(r)["ci"]
-	projects := ogit.GetProjects()
+	//projects := ogit.GetProjects()
 
-	for _, singleProject := range projects {
+	for _, singleProject := range ogit.Namespaces {
 		if singleProject.CI == projectCI {
 			json.NewEncoder(w).Encode(singleProject)
 		}
@@ -39,8 +42,8 @@ func GetOneProject(w http.ResponseWriter, r *http.Request) {
 
 // GetAllProjects - List all Projects in API
 func GetAllProjects(w http.ResponseWriter, r *http.Request) {
-	projects := ogit.GetProjects()
-	json.NewEncoder(w).Encode(projects)
+	//projects := ogit.GetProjects()
+	json.NewEncoder(w).Encode(ogit.Namespaces)
 }
 
 // UpdateProject - Update dedicated project in API

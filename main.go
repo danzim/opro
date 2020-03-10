@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	oapi "github.com/danzim/opro/oapi"
+	"github.com/danzim/opro/ogit"
 
 	"github.com/gorilla/mux"
 )
@@ -15,6 +16,8 @@ func homeLink(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	ogit.GetProjects()
+
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/", homeLink)
 	router.HandleFunc("/api/v1/version", oapi.GetVersion).Methods("GET")

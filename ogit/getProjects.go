@@ -20,7 +20,8 @@ type Namespace struct {
 // AllNamespaces - exported namespaces
 type AllNamespaces []Namespace
 
-var namespaces = AllNamespaces{}
+// Namespaces - Export of all namespaces
+var Namespaces = AllNamespaces{}
 
 // GetProjects - Get Projects in Git Repo
 func GetProjects() AllNamespaces {
@@ -29,7 +30,7 @@ func GetProjects() AllNamespaces {
 	if err != nil {
 		log.Fatal(err)
 	}
-	namespaces = nil
+	Namespaces = nil
 	for _, folder := range dir {
 		matched, err := regexp.MatchString(`ci-.*`, folder.Name())
 		if err != nil {
@@ -71,8 +72,8 @@ func GetProjects() AllNamespaces {
 				DisplayName: displayName,
 				Description: description,
 			}
-			namespaces = append(namespaces, newNamespace)
+			Namespaces = append(Namespaces, newNamespace)
 		}
 	}
-	return namespaces
+	return Namespaces
 }
