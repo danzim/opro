@@ -5,6 +5,7 @@ import (
 	"log"
 	"time"
 
+	helper "github.com/danzim/opro/helper"
 	"gopkg.in/src-d/go-git.v4"
 	"gopkg.in/src-d/go-git.v4/plumbing/object"
 	"gopkg.in/src-d/go-git.v4/plumbing/transport/http"
@@ -55,10 +56,12 @@ func DeleteProject(ci string) {
 		log.Fatal(err)
 	}
 	fmt.Println(obj)
+
+	token := helper.GetToken()
 	err = r.Push(&git.PushOptions{
 		Auth: &http.BasicAuth{
 			Username: "bla",
-			Password: "a0d18a8f612c4d4704c69df9228028900d313bbd",
+			Password: token,
 		},
 	})
 	if err != nil {

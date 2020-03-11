@@ -8,14 +8,13 @@ import (
 	"time"
 
 	helper "github.com/danzim/opro/helper"
-
 	"gopkg.in/src-d/go-git.v4"
 	"gopkg.in/src-d/go-git.v4/plumbing/object"
 	"gopkg.in/src-d/go-git.v4/plumbing/transport/http"
 )
 
-// CreateProject -
-func CreateProject(ci string) {
+// UpdateProject -
+func UpdateProject(ci string) {
 
 	var tpl = `apiVersion: v1
 kind: Namespace
@@ -28,7 +27,6 @@ metadata:
   spec:
 finalizers:
 - kubernetes`
-
 	type ParamsProject struct {
 		Name        string
 		DisplayName string
@@ -36,7 +34,6 @@ finalizers:
 	}
 
 	var buffer bytes.Buffer
-	//var data io.Reader
 
 	for _, singleProject := range Namespaces {
 		if singleProject.CI == ci {
@@ -54,18 +51,12 @@ finalizers:
 			path := fmt.Sprintf("/%s/00_namespace/", ci)
 			filepath := fmt.Sprintf("/%s/00_namespace/%s.yaml", ci, ci)
 			filename := fmt.Sprintf("%s/00_namespace/%s.yaml", ci, ci)
-			//fmt.Println(ci)
-			//fmt.Println(path)
+
 			err := fs.MkdirAll(path, 0755)
 			if err != nil {
 				log.Fatal(err)
 			}
-			//fs.MkdirAll("/test/bla", 0755)
 
-			dir, _ := fs.ReadDir("/")
-			for _, folder := range dir {
-				fmt.Println(folder.Name())
-			}
 			yamlFile, err := fs.Create(filepath)
 			if err != nil {
 				fmt.Printf("File Creation failed")
@@ -74,14 +65,6 @@ finalizers:
 
 			data := buffer.String()
 			yamlFile.Write([]byte(data))
-			fileinfo, _ := fs.Lstat(filepath)
-			fmt.Println(fileinfo.IsDir())
-
-			file, _ := fs.Open(filepath)
-			buf := new(bytes.Buffer)
-			buf.ReadFrom(file)
-			s := buf.String()
-			fmt.Printf(s)
 
 			w, err := r.Worktree()
 			if err != nil {
@@ -110,6 +93,7 @@ finalizers:
 					When:  time.Now(),
 				},
 			})
+
 			if err != nil {
 				fmt.Printf("Commit failed")
 				log.Fatal(err)

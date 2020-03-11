@@ -57,12 +57,13 @@ func UpdateProject(w http.ResponseWriter, r *http.Request) {
 	}
 	json.Unmarshal(reqBody, &updatedProject)
 
-	projects := ogit.GetProjects()
-	for i, singleProject := range projects {
+	//projects := ogit.GetProjects()
+	for i, singleProject := range ogit.Namespaces {
 		if singleProject.CI == projectCI {
 			singleProject.DisplayName = updatedProject.DisplayName
 			singleProject.Description = updatedProject.Description
-			projects = append(projects[:i], singleProject)
+			ogit.Namespaces = append(ogit.Namespaces[:i], singleProject)
+			ogit.UpdateProject(projectCI)
 			json.NewEncoder(w).Encode(singleProject)
 		}
 	}
