@@ -71,11 +71,12 @@ func UpdateProject(w http.ResponseWriter, r *http.Request) {
 // DeleteProject - Delete Project in API
 func DeleteProject(w http.ResponseWriter, r *http.Request) {
 	projectCI := mux.Vars(r)["ci"]
-	projects := ogit.GetProjects()
+	//projects := ogit.GetProjects()
 
-	for i, singleProject := range projects {
+	for i, singleProject := range ogit.Namespaces {
 		if singleProject.CI == projectCI {
-			projects = append(projects[:i], projects[i+1:]...)
+			ogit.Namespaces = append(ogit.Namespaces[:i], ogit.Namespaces[i+1:]...)
+			ogit.DeleteProject(projectCI)
 			fmt.Fprintf(w, "The event with ID %v has been deleted successfully", projectCI)
 		}
 	}

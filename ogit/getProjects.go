@@ -25,7 +25,7 @@ var Namespaces = AllNamespaces{}
 
 // GetProjects - Get Projects in Git Repo
 func GetProjects() AllNamespaces {
-	fs := CloneRepo()
+	fs, _ := CloneRepo()
 	dir, err := fs.ReadDir("/")
 	if err != nil {
 		log.Fatal(err)

@@ -1,6 +1,7 @@
 package ogit
 
 import (
+	"fmt"
 	"log"
 
 	"gopkg.in/src-d/go-billy.v4"
@@ -10,17 +11,18 @@ import (
 )
 
 // CloneRepo - Clone Git Repo
-func CloneRepo() billy.Filesystem {
+func CloneRepo() (billy.Filesystem, *git.Repository) {
 	url := "https://github.com/danzim/manifest-test.git"
 
 	fs := memfs.New()
 	storer := memory.NewStorage()
 
-	_, err := git.Clone(storer, fs, &git.CloneOptions{
+	r, err := git.Clone(storer, fs, &git.CloneOptions{
 		URL: url,
 	})
 	if err != nil {
+		fmt.Printf("Cloning of Repo failed")
 		log.Fatal(err)
 	}
-	return fs
+	return fs, r
 }
